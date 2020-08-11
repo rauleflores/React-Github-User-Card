@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 
 import UserCard from "./components/UserCard";
+import UserSearch from "./components/UserSearch";
 
 class App extends React.Component {
 	constructor() {
@@ -10,9 +11,17 @@ class App extends React.Component {
 		this.state = {
 			user: {},
 			followers: [],
+			newUser: "",
+			initUser: "rauleflores",
 		};
 		//console.log("App State:", this.state);
 	}
+	setNewUser = (newUser) => {
+		this.setState({
+			...this.state,
+			newUser: newUser,
+		});
+	};
 	getFollowers(followers) {
 		axios
 			.get(followers)
@@ -27,9 +36,9 @@ class App extends React.Component {
 			})
 			.catch((err) => console.log("Something went wrong:", err));
 	}
-	componentDidMount() {
+	getUserandFollowers(user) {
 		axios
-			.get("https://api.github.com/users/rauleflores")
+			.get(`https://api.github.com/users/${user}`)
 			.then((res) => {
 				//console.log(res.data);
 				const user = res.data;
@@ -48,12 +57,34 @@ class App extends React.Component {
 			})
 			.catch((err) => console.log("Something went wrong:", err));
 	}
+	componentDidMount() {
+		this.getUserandFollowers(this.state.initUser);
+	}
+	componentDidUpdate() {
+		if (this.state.user !== this.state.newUser) {
+			this.getUserandFollowers(this.state.newUser);
+		}
+		// axios
+		// 	.get(`https://api.github.com/users/${user}`)
+		// 	.then((res) => {
+		// 		console.log("searchUsers res:", res.data);
+		// 		const newUser = res.data;
+		// 		if (this.state.user !== newUser) {
+		// 			this.setState({
+		// 				...this.state,
+		// 				user: newUser,
+		// 			});
+		// 		}
+		// 	})
+		// 	.catch((err) => console.log("Something went wrong:", err));
+	}
 
 	render() {
 		console.log("App state (render):", this.state);
 		return (
 			<div className="App">
 				<header className="App-header">
+					<UserSearch setNewUser={this.setNewUser} />
 					<UserCard user={this.state.user} followers={this.state.followers} />
 				</header>
 			</div>
