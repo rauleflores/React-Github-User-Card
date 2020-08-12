@@ -1,4 +1,7 @@
 import React from "react";
+
+import FollowerCard from "./FollowerCard";
+//import GithubGraph from "./GitHubGraph";
 import { UseStyles as useStyles } from "./UseStyles";
 
 const UserCard = (props) => {
@@ -25,22 +28,11 @@ const UserCard = (props) => {
 					<p>Following: {props.user.following}</p>
 				</div>
 			</div>
+			{/* <GithubGraph /> */}
 			<div className={classes.followersDiv}>
 				{props.followers.map((follower, key) => {
 					//console.log("props.followers map:", follower, "Key:", key);
-					return (
-						<div className={classes.followersCard} key={key}>
-							<img
-								className={classes.image}
-								src={follower.avatar_url}
-								alt={follower.login}
-							/>
-							<p>Username: {follower.login}</p>
-							<p>
-								<a href={follower.url}>More Info</a>
-							</p>
-						</div>
-					);
+					return <FollowerCard follower={follower} key={key} />;
 				})}
 			</div>
 		</>

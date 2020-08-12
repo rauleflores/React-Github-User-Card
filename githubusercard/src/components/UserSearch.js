@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 
 const UserSearch = (props) => {
-	console.log("UserSearch.js props:", props);
+	//console.log("UserSearch.js props:", props);
 	const [formState, setFormState] = useState({
 		user: "",
 	});
 
 	const changeHandler = (e) => {
 		setFormState({
-			...formState,
 			[e.target.name]: e.target.value,
 		});
 	};
